@@ -3,6 +3,8 @@ pragma solidity ^0.8.7;
 
 import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 import "./RandomNumberConsumerV2.sol";
+import "./Bicho.sol";
+
 
 /**
  * @title The Counter contract
@@ -17,6 +19,8 @@ contract KeepersCounter is KeeperCompatibleInterface {
   address public vrfConsumer;
   address public s_owner;
   RandomNumberConsumerV2Interface immutable CONSUMER;
+  BichoInterface immutable TARGET;
+
 
   /**
    * Use an interval in seconds and a timestamp to slow execution of Upkeep
@@ -29,12 +33,13 @@ contract KeepersCounter is KeeperCompatibleInterface {
    *
    * @param updateInterval - Period of time between two counter increments expressed as UNIX timestamp value
    */
-  constructor(uint256 updateInterval, address _s_owner,address _vrfConsumer) {
+  constructor(uint256 updateInterval, address _s_owner,address _vrfConsumer,address _Bicho) {
     interval = updateInterval;
     lastTimeStamp = block.timestamp;
     s_owner = _s_owner;
     vrfConsumer = _vrfConsumer;
     CONSUMER = RandomNumberConsumerV2Interface(_vrfConsumer);
+    TARGET = BichoInterface(_Bicho);
   }
 
   /**
@@ -65,10 +70,15 @@ contract KeepersCounter is KeeperCompatibleInterface {
     (bool upkeepNeeded, ) = checkUpkeep("");
     require(upkeepNeeded, "Time interval not met");
 
-    lastTimeStamp = block.timestamp;
+    uint256 lastTimeStamp = block.timestamp;
     CONSUMER.setDataFetched(false);
-    emit PerformGame(CONSUMER.s_requestId(),CONSUMER.s_randomWords(),block.timestamp,block.number);
+    
+    uint256 drawID = CONSUMER.s_requestId();
+    uint256[] randomWords = CONSUMER.s_randomWords();
+
+    emit PerformGame(drawID, randomWords,  block.timestamp, block.number);
     // Call the logic to find winners;
+    TARGET.ReceiveSortedResults(drawID, randomWords);
   }
 
   function setInterval(uint256 _interval) public onlyOwner {
