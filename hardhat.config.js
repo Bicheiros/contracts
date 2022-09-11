@@ -25,9 +25,9 @@ const REPORT_GAS = process.env.REPORT_GAS || false
 module.exports = {
   defaultNetwork: "hardhat",
   networks: {
-    mumbai: {
+    polygonMumbai: {
       url: "https://polygon-mumbai.g.alchemy.com/v2/cNm_fCBzLfSGccrDPpceMAspam8qZuSi",
-      accounts: [PRIVATE_KEY],
+      accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
       chainId: 80001
     },
     polygon: {
@@ -41,7 +41,7 @@ module.exports = {
     // yarn hardhat verify --network <NETWORK> <CONTRACT_ADDRESS> <CONSTRUCTOR_PARAMETERS>
     apiKey: {
       polygon: POLYGONSCAN_API_KEY,
-      polygonMumbai:  POLYGONSCAN_API_KEY,
+      polygonMumbai:  "6BITUH8H1NN7H2JXGKFMRYD6SDVDMTMM57",
     },
     customChains:[],
   },
