@@ -1,0 +1,11 @@
+Sun Sep 11 2022 09:29:23 GMT-0300 (Brasilia Standard Time) Bicho contract deployed at: 0x5FbDB2315678afecb367f032d93F642f64180aa3
+npx hardhat verify --network hardhat 0x5FbDB2315678afecb367f032d93F642f64180aa3 
+
+Sun Sep 11 2022 09:29:23 GMT-0300 (Brasilia Standard Time)
+Consumer contract deployed at: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+npx hardhat verify --network hardhat 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512 "1784" "0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed" "0x4b09e658ed251bcafeebbc69400383d49f344ace09b9576fe248bb02c003fe9f"
+
+Sun Sep 11 2022 09:29:23 GMT-0300 (Brasilia Standard Time)
+ Keeper contract deployed at: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+npx hardhat verify --network hardhat 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0 "900" "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512" "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+

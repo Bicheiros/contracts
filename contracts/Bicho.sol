@@ -296,7 +296,7 @@ contract Bicho {
     }
 
     function setKeeper(address _newKeeper) public onlyOwner {
-        emit OwnerChanged(keeper, _newKeeper);
+        emit KeeperChanged(keeper, _newKeeper);
         keeper = _newKeeper;
     }
 

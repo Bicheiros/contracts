@@ -7,7 +7,6 @@ require("hardhat-contract-sizer")
 require("./tasks")
 require("@appliedblockchain/chainlink-plugins-fund-link")
 require("dotenv").config()
-
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
@@ -27,8 +26,8 @@ module.exports = {
   defaultNetwork: "hardhat",
   networks: {
     mumbai: {
-      url: "https://matic-mumbai.chainstacklabs.com",
-      accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
+      url: "https://polygon-mumbai.g.alchemy.com/v2/cNm_fCBzLfSGccrDPpceMAspam8qZuSi",
+      accounts: [PRIVATE_KEY],
       chainId: 80001
     },
     polygon: {

@@ -56,6 +56,7 @@ contract RandomNumberConsumerV2 is VRFConsumerBaseV2 {
 
     event ReturnedRandomness(uint256[] randomWords);
     event OwnerChanged(address oldOwner, address newOwner);
+    event KeeperChanged(address oldKeeper, address newKeeper);
 
     /**
      * @notice Constructor inherits VRFConsumerBaseV2
@@ -141,6 +142,11 @@ contract RandomNumberConsumerV2 is VRFConsumerBaseV2 {
     function setOwner(address _newOwner) public onlyOwner {
         emit OwnerChanged(s_owner, _newOwner);
         s_owner = _newOwner;
+    }
+
+    function setKeeper(address _newKeeper) public onlyOwner {
+        emit KeeperChanged(keeper, _newKeeper);
+        keeper = _newKeeper;
     }
 
     modifier onlyOwner() {

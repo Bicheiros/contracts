@@ -4,10 +4,10 @@
 const fs = require('fs');
 
 task('bicheiro', "Deploys all contracts, to have a bicheiro.")
-    .addParam("subscriptionId", "The subscriptionId.")
-    .addParam("vrfCoordinator", "The vrfCoordinator. https://docs.chain.link/docs/vrf/v2/supported-networks/#configurations")
-    .addParam("keyHash", "The keyHash. https://docs.chain.link/docs/vrf/v2/supported-networks/#configurations")
-    .addOptionalParameter("interval","suggested 900 as 15 minutes")
+    .addParam("subid", "The subscriptionId.")
+    .addParam("vrf", "The vrfCoordinator. https://docs.chain.link/docs/vrf/v2/supported-networks/#configurations")
+    .addParam("key", "The keyHash. https://docs.chain.link/docs/vrf/v2/supported-networks/#configurations")
+    .addOptionalParam("interval","suggested 900 as 15 minutes")
     .setAction(async (taskArgs, hre) => {
 
         console.log("Deploying Game of Bicho");
@@ -21,9 +21,6 @@ task('bicheiro', "Deploys all contracts, to have a bicheiro.")
         );
 
         ///////////////// BICHO DEPLOYMENT ///////////////////////////////
-        // INFO LOGS
-        console.log("token_owner:\x1B[33m", token_owner, "\x1B[37m\n");
-
         const Bicho = await hre.ethers.getContractFactory("Bicho");
 
         // constructor()
@@ -48,9 +45,9 @@ task('bicheiro', "Deploys all contracts, to have a bicheiro.")
 
         ///////////////// RandomNumberConsumer DEPLOYMENT ///////////////////////////
 
-        const subscriptionId = taskArgs.subscriptionId;
-        const vrfCoordinator = taskArgs.vrfCoordinator;
-        const keyHash = taskArgs.keyHash;
+        const subscriptionId = taskArgs.subid;
+        const vrfCoordinator = taskArgs.vrf;
+        const keyHash = taskArgs.key;
     
         // INFO LOGS
         console.log("subscriptionId",subscriptionId)
