@@ -42,8 +42,9 @@ module.exports = {
     // yarn hardhat verify --network <NETWORK> <CONTRACT_ADDRESS> <CONSTRUCTOR_PARAMETERS>
     apiKey: {
       polygon: POLYGONSCAN_API_KEY,
-
+      polygonMumbai:  POLYGONSCAN_API_KEY,
     },
+    customChains:[],
   },
   gasReporter: {
     enabled: REPORT_GAS,
