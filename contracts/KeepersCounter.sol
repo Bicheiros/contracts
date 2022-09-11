@@ -74,11 +74,11 @@ contract KeepersCounter is KeeperCompatibleInterface {
     CONSUMER.setDataFetched(false);
     
     uint256 drawID = CONSUMER.s_requestId();
-    uint256[] randomWords = CONSUMER.s_randomWords();
+    uint256[] memory randomWords = CONSUMER.s_randomWords();
 
     emit PerformGame(drawID, randomWords,  block.timestamp, block.number);
     // Call the logic to find winners;
-    TARGET.ReceiveSortedResults(drawID, randomWords);
+    TARGET.ReceiveSortedResults(drawID, randomWords,block.timestamp);
   }
 
   function setInterval(uint256 _interval) public onlyOwner {

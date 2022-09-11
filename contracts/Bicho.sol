@@ -175,7 +175,7 @@ contract Bicho {
         require(pastGames[gameID][msg.sender].retrieved = false, "user already retrieved prize");
 
         uint256 sum = 0;
-        Bet[] memory betsWithdraw = pastGames[gameID][msg.sender].bets;
+        Bet[] storage betsWithdraw = pastGames[gameID][msg.sender].bets;
 
         uint256[] memory drawnAnimals;
 
