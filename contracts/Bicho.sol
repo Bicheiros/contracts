@@ -13,6 +13,7 @@ interface BichoInterface {
 contract Bicho {
     event KeeperChanged(address oldKeeper, address newKeeper);
     event OwnerChanged(address oldOwner, address newOwner);
+    event FeeChanged(uint256 ticketValue, uint256 newFee);
     event MaxBetsPerUserChanged(uint256 oldMaxBetsPerUser, uint256 newMaxBetsPerUser);
     event WithdrawThresholdChanged(uint256 oldThreshold, uint256 newThreshold);
     event GameStateChanged(GameState current);
@@ -96,6 +97,7 @@ contract Bicho {
     mapping(uint256 => mapping(address => Bets)) public pastGames;
     mapping(uint256 => Result) public pastResults;
 
+    // Constructor
     constructor() {
         counter = 0;
         s_owner = msg.sender;
@@ -104,6 +106,7 @@ contract Bicho {
         BetValues[BetType.CercadoGrupo] = 18;
     }
 
+    // Multiples Bets
     function newBets(
         BetType[] calldata betTypes,
         uint32[][] calldata values,
@@ -153,15 +156,7 @@ contract Bicho {
         emit NewBets(msg.sender, currentGameID, betIDs, betTypes, values, quantity);
     }
 
-    function AlreadyHaveBets() external view returns ( bool ){
-        for (uint256 index = 0; index < players.length; index++) {
-            if ( bets[players[index]].bets.length > 0 ) {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    // Sinlge BET
     function newBet(
         BetType betType,
         uint32[] calldata values,
@@ -199,6 +194,15 @@ contract Bicho {
         bets[msg.sender] = betsHere;
 
         emit NewBet(msg.sender, currentGameID, betID, betType, values, quantity);
+    }
+
+    function AlreadyHaveBets() external view returns ( bool ){
+        for (uint256 index = 0; index < players.length; index++) {
+            if ( bets[players[index]].bets.length > 0 ) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function ReceiveSortedResults(
@@ -296,14 +300,19 @@ contract Bicho {
         keeper = _newKeeper;
     }
 
-    modifier onlyKeeper() {
-        require(msg.sender == keeper, "not the keeper");
-        _;
-    }
-
     function setOwner(address _newOwner) public onlyOwner {
         emit OwnerChanged(s_owner, _newOwner);
         s_owner = _newOwner;
+    }
+
+    function setFee(uint256 _newFee) public onlyOwner {
+        emit FeeChanged(ticketValue, _newFee);
+        ticketValue = _newFee;
+    }
+
+    modifier onlyKeeper() {
+        require(msg.sender == keeper, "not the keeper");
+        _;
     }
 
     modifier onlyOwner() {
