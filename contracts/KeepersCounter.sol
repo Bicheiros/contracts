@@ -56,7 +56,11 @@ contract KeepersCounter is KeeperCompatibleInterface {
       bytes memory /* performData */
     )
   {
-    upkeepNeeded = (block.timestamp - lastTimeStamp) > interval && CONSUMER.dataFetched();
+    bool blockConditionOne = (block.timestamp - lastTimeStamp) > interval;
+    bool blockConditionTwo = CONSUMER.dataFetched();
+    bool blockConditionThree = TARGET.AlreadyHaveBets();
+
+    upkeepNeeded = blockConditionOne && blockConditionTwo && blockConditionThree;
     // We don't use the checkData in this example. The checkData is defined when the Upkeep was registered.
   }
 

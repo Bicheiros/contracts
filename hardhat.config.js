@@ -66,6 +66,10 @@ module.exports = {
       saveDeployments: true,
       chainId: 4,
     },
+    mumbai: {
+      url: "https://matic-mumbai.chainstacklabs.com",
+      accounts: [PRIVATE_KEY],
+    },
     goerli: {
       url: GOERlI_RPC_URL,
       accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
@@ -90,14 +94,16 @@ module.exports = {
       saveDeployments: true,
       chainId: 137,
     },
+    // mumbai:{
+    //   url: "https://matic-mumbai.chainstacklabs.com",
+    //   chainId: 80001,
+    //   accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
+    // }
   },
   etherscan: {
     // yarn hardhat verify --network <NETWORK> <CONTRACT_ADDRESS> <CONSTRUCTOR_PARAMETERS>
     apiKey: {
-      rinkeby: ETHERSCAN_API_KEY,
-      kovan: ETHERSCAN_API_KEY,
       polygon: POLYGONSCAN_API_KEY,
-      goerli: ETHERSCAN_API_KEY
     },
   },
   gasReporter: {

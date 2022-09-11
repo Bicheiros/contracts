@@ -7,6 +7,7 @@ interface BichoInterface {
         uint256[] memory randomWords,
         uint256 timestamp
     ) external;
+    function AlreadyHaveBets() external view returns ( bool );
 }
 
 contract Bicho {
@@ -25,6 +26,16 @@ contract Bicho {
         uint32[][] values,
         uint256[] quantity
     );
+
+    event NewBet(
+        address sender,
+        uint256 gameID,
+        uint256 betID,
+        BetType betType,
+        uint32[] values,
+        uint256 quantity
+    );
+
 
     event ResultsReceived(
         address[] playersFromRound,
@@ -140,6 +151,54 @@ contract Bicho {
         bets[msg.sender] = betsHere;
 
         emit NewBets(msg.sender, currentGameID, betIDs, betTypes, values, quantity);
+    }
+
+    function AlreadyHaveBets() external view returns ( bool ){
+        for (uint256 index = 0; index < players.length; index++) {
+            if ( bets[players[index]].bets.length > 0 ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function newBet(
+        BetType betType,
+        uint32[] calldata values,
+        uint256 quantity
+    ) public payable {
+        require(currentGameState != GameState.CLOSED, "game state is closed");
+        uint256 previousCounter = counter;
+        uint256 newcounter = counter + 1;
+
+        Bets storage betsHere = bets[msg.sender];
+        if (betsHere.bets.length == 0) {
+            betsHere.better = msg.sender;
+            betsHere.quantity = 0;
+            players.push(msg.sender);
+        }
+
+        require(
+            quantity + betsHere.quantity <= maxBetsPerUser,
+            "user can't have more bets than the maximum allowed"
+        );
+
+        require( ( quantity * ticketValue ) <= msg.value, "wrong value for tickets fee");
+
+        counter += 1;
+        uint256 betID = counter;
+        betsHere.bets[betsHere.bets.length ] = Bet(
+            betID,
+            betType,
+            values,
+            quantity
+        );
+    
+
+        counter++;
+        bets[msg.sender] = betsHere;
+
+        emit NewBet(msg.sender, currentGameID, betID, betType, values, quantity);
     }
 
     function ReceiveSortedResults(
